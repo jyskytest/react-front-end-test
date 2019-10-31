@@ -2,11 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Contact from './Contact';
+
 import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
   Link
 } from "react-router-dom";
 import { addContactToDB, deleteContactFromDB, getContacts } from '../ioUtils/ioUtils';
@@ -22,7 +19,40 @@ const ContactContainer = () => {
     setIsLoading(false);
   }, [])
 
+  /**
+   * Can we create?
+   */
+  const canCreate = () => {
+    if (Object.keys(contact).length === 0) {
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * Simple email check
+   */
+  const isEmailValid = () => {
+    if (!contact.emailAddress) {
+      return false;
+    }
+
+    if (contact.emailAddress.indexOf('@') < 0) {
+      return false;
+    }
+    return true;
+  }
+
   const addContact = async () => {
+    if (!canCreate()) {
+      alert("Please enter a name and email address.");
+      return;
+    }
+    if (!isEmailValid()) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+
     setIsLoading(true);
     const contacts = await addContactToDB(contact);
     setContact({})
@@ -30,27 +60,20 @@ const ContactContainer = () => {
     setIsLoading(false);
   }
 
-  const onDeleteContact = async (contact) => {
-    deleteContactFromDB(contact);
+  /**
+   * Delete a contact
+   */
+  const onDeleteContact = async (id) => {
+    deleteContactFromDB(id);
     await setContacts(getContacts());
-    alert('deleted...');
   }
 
-
+  /**
+   * Change contact field for new contact function
+   */
   const changeContactField = (evt, fieldName) => {
     contact[fieldName] = evt.target.value;
     setContact(contact);
-    //alert('changed..');
-  }
-
-  // updatecontactfield... uses id to get contact via filter...updates it and sets 
-  // all contacts
-
-  const isButtonDisabled = () => {
-    //  const disabled = contact.firstName.length > 0
-    //    && contact.lastName.length > 0
-    //    && contact.emailAddress > 0;
-    return false;
   }
 
   return (
@@ -63,24 +86,41 @@ const ContactContainer = () => {
       {!isLoading &&
         <div>
           <h2>Contacts...</h2>
-          <TextField label="Name" onChange={((evt) => changeContactField(evt, 'name'))} value={contact.name} />
-          <TextField label="eMail Address" onChange={((evt) => changeContactField(evt, 'emailAddress'))} value={contact.emailAddress} />
+          <TextField label="Name" onChange={((evt) => changeContactField(evt, 'name'))}
+            value={contact.name}
+            style={{ width: '200px' }}
+            variant="standard" />
 
-          <Button disabled={isButtonDisabled()} onClick={addContact} variant="contained" color="primary" >
+          <span class="marginLeft6" />
+
+          <TextField label="eMail Address" onChange={((evt) => changeContactField(evt, 'emailAddress'))}
+            value={contact.emailAddress}
+            style={{ width: '300px' }}
+            variant="standard" />
+
+          <span class="marginLeft12" />
+
+          <Button onClick={addContact} variant="contained" color="primary" >
             Add new contact
           </Button>
 
           <div className="contactDetails">
             Number of contacts {contacts.length}
-
+            <div className="marginTop12"></div>
             {contacts.map((contact, index) => (
               <div key={index} className="contactEntry">
-                <div >
+                <div id="name">
                   {contact.name}
                 </div>
 
-                <div>
-                  <Link to={`/contacts/${contact.id}`}> Edit</Link>
+                <div id="email">
+                  {contact.emailAddress}
+                </div>
+
+                <div id="link">
+                  <Link to={`/contacts/${contact.id}`}>Edit</Link>
+                  <Button onClick={() => onDeleteContact(contact.id)} size="small">Delete</Button>
+
                 </div>
               </div>
             ))}
