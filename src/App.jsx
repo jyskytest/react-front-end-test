@@ -3,17 +3,14 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
 } from "react-router-dom";
 
 import "./App.css";
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-
 import ContactContainer from './components/ContactContainer'
 import Contact from './components/Contact';
+import Home from './components/Home';
 
 class App extends Component {
   render() {
@@ -26,11 +23,11 @@ class App extends Component {
           </Toolbar>
           </AppBar>
 
-          <div className="contactList">
-            ContactContainer
-          </div>
         </div>
         <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
           <Route exact path="/contacts">
             <ContactContainer />
           </Route>

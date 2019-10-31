@@ -10,7 +10,7 @@
 .App-header {
   xbackground-color: #282c34;
   min-height: 100vh;
-  display: flex;
+  xdisplay: flex;
   flex-direction: column;
   align-items: center;
   justify-content: top;
@@ -32,10 +32,11 @@
 }
 
 /* My classes */
-.contactList,.contactDetail{
+.contactList,.contactDetail,.home{
   max-width: 1000px;
   margin: 0 auto;
   margin-top:64px;
+
 }
 
 .contactActions {
