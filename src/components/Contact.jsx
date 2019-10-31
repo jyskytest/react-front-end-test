@@ -19,7 +19,10 @@ const Contact = () => {
     return new Date(date).toUTCString();
   }
 
-  const onEditMode = () => {
+  const doCancel = () => {
+
+  }
+  const doEditMode = () => {
     setEditMode(!editMode);
   }
 
@@ -30,32 +33,27 @@ const Contact = () => {
         <CardContent>
 
           <Typography variant="h5" component="h2">
-            Name: {editMode
-              ? <TextField label="Name" value={contact.name} />
-              : contact.name
-            }
+            <TextField label="Name" value={contact.name} />
           </Typography>
 
           <Typography>
-            eMailAddress: {contact.emailAddress}
+            <TextField label="eMail Address" value={contact.emailAddress} />
           </Typography>
 
-          {editMode &&
-            <div>
-              <Typography>
-                Created: {getFriendlyDate(contact.dateCreated)}
-              </Typography>
 
-              <Typography>
-                Updated: {getFriendlyDate(contact.dateUpdated)}
-              </Typography>
-            </div>
-          }
+          <Typography>
+            Created: {getFriendlyDate(contact.dateCreated)}
+          </Typography>
+
+          <Typography>
+            Updated: {getFriendlyDate(contact.dateUpdated)}
+          </Typography>
 
         </CardContent>
 
         <CardActions>
-          <Button onClick={onEditMode} size="small">Edit</Button>
+          <Button onClick={doEditMode} size="small">Edit</Button>
+          <Button onClick={doCancel} size="small">Cancel</Button>
         </CardActions>
       </Card>
     </div>

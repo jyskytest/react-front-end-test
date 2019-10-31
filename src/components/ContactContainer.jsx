@@ -80,6 +80,10 @@ const ContactContainer = () => {
                 </div>
 
                 <div>
+                  {contact.emailAddress}
+                </div>
+
+                <div>
                   <Link to={`/contacts/${contact.id}`}> Edit</Link>
                 </div>
               </div>
