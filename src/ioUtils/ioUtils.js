@@ -16,8 +16,8 @@ export const addContactToDB = async contact => {
   return randomDelayPromise(contactStore);
 }
 
-export const deleteContactFromDB = contact => {
-  contactStore = contactStore.filter((entry) => contact.id !== entry.id);
+export const deleteContactFromDB = id => {
+  contactStore = contactStore.filter((entry) => id !== entry.id);
 }
 
 export const getContactById = (id) => {
@@ -27,4 +27,19 @@ export const getContactById = (id) => {
     return contact[0]
   }
   return {}
+}
+
+/**
+ * Updated a contact entry
+ * @param {*} updatedContact 
+ */
+export const updateContact = (updatedContact) => {
+  contactStore = contactStore.map((entry) => {
+    if (entry.id === updatedContact.id) {
+      updatedContact.dateUpdated = Date.now();
+      return updatedContact;
+    } else {
+      return entry;
+    }
+  })
 }

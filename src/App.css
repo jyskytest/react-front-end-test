@@ -8,7 +8,7 @@
 }
 
 .App-header {
-  xbackground-color: #282c34;
+  background-color: #282c34;
   min-height: 100vh;
   xdisplay: flex;
   flex-direction: column;
@@ -44,9 +44,34 @@
 }
 
 .contactDetails {
+  display: block;
   margin-top: 32px;
 }
 
 .contactEntry {
   display: flex;
+  width: 100%;
+  align-content: space-between;
 }
+.contactEntry div {
+  margin-right: 20px;
+  margin-top: 8px;
+  width: 300px;
+}
+
+.marginLeft6 {
+  margin-left: 16px;
+}
+
+.marginLeft12 {
+  margin-left: 12px;
+}
+
+.marginTop12 {
+  margin-top: 12px;
+}
+
+.marginTop24 {
+  margin-top: 24px;
+}
+

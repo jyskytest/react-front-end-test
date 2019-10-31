@@ -8,7 +8,9 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import { getContactById } from '../ioUtils/ioUtils';
+import { getContactById, updateContact } from '../ioUtils/ioUtils';
+
+
 
 /**
  * This component is wrapped in a HOC (withRouter)
@@ -16,54 +18,90 @@ import { getContactById } from '../ioUtils/ioUtils';
 const Contact = (props) => {
   const { id } = useParams();
   const contact = getContactById(id);
-  alert(contact.name)
-  const [editMode, setEditMode] = useState(false);
+
+  // Copy object for default purposes.
+  const [editContact, setContact] = useState(JSON.parse(JSON.stringify(contact)));
 
   const getFriendlyDate = date => {
     return new Date(date).toUTCString();
   }
 
+  /**
+   * Use the router to go back
+   */
   const doCancel = () => {
-
     props.history.goBack();
-
   }
 
   /**
-   * Get the name and email address
+   * Changed field.. Update state.
+   * Note that setState in a hook will not rerender
+   * if the reference is the same...
+   * Create a new Object.
+   *  
+   * @param {*} evt 
+   * @param {*} fieldName 
    */
-  const doUpdate = () => {
-    setEditMode(!editMode);
+  const changeContactField = (evt, fieldName) => {
+    editContact[fieldName] = evt.target.value;
+    const newStateObj = JSON.parse(JSON.stringify(editContact))
+    setContact(newStateObj);
   }
 
+  /**
+   * Update contact store and go back via router
+   */
+  const doUpdate = () => {
+    updateContact(editContact);
+    props.history.goBack();
+  }
 
   return (
-    <div class="contactDetail">
+    <div className="contactDetail">
+      <h2>Contact card for {editContact.name}</h2>
+
       <Card>
         <CardContent>
+          <div>
+            <Typography variant="h5" component="h2">
+              <TextField onChange={((evt) => changeContactField(evt, 'name'))}
+                style={{ width: '200px' }}
+                label="Name"
+                value={editContact.name}
+                variant="standard" />
+            </Typography>
+          </div>
 
-          <Typography variant="h5" component="h2">
-            <TextField label="Name" value={contact.name} />
-          </Typography>
+          <div className="marginTop12">
+            <Typography>
+              <TextField onChange={((evt) => changeContactField(evt, 'emailAddress'))}
+                style={{ width: '300px' }}
+                label="eMail Address"
+                value={editContact.emailAddress}
+                variant="standard" />
+            </Typography>
+          </div>
 
-          <Typography>
-            <TextField label="eMail Address" value={contact.emailAddress} />
-          </Typography>
+          <div className="marginTop12">
+            <Typography>
+              Created: {getFriendlyDate(contact.dateCreated)}
+            </Typography>
+          </div>
 
 
-          <Typography>
-            Created: {getFriendlyDate(contact.dateCreated)}
-          </Typography>
-
-          <Typography>
-            Updated: {getFriendlyDate(contact.dateUpdated)}
-          </Typography>
+          <div className="marginTop12">
+            <Typography>
+              Updated: {getFriendlyDate(contact.dateUpdated)}
+            </Typography>
+          </div>
 
         </CardContent>
 
         <CardActions>
-          <Button onClick={doUpdate} size="small">Update</Button>
-          <Button onClick={doCancel} size="small">Cancel</Button>
+          <div className="marginTop24">
+            <Button onClick={doUpdate} size="small" variant="contained" color="primary">Update</Button>
+            <Button onClick={doCancel} size="small">Cancel</Button>
+          </div>
         </CardActions>
       </Card>
     </div>

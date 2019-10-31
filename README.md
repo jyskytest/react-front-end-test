@@ -1,5 +1,11 @@
 # Contact Manager
 
+## Please run the app.  It has info from me on what I did.
+
+Thanks,  James
+
+<hr />
+
 ## Features to implement
 
 - List Contacts
