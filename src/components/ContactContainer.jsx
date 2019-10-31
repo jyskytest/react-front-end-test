@@ -3,6 +3,12 @@ import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Contact from './Contact';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 import { addContactToDB, deleteContactFromDB, getContacts } from '../ioUtils/ioUtils';
 
 const ContactContainer = () => {
@@ -11,8 +17,8 @@ const ContactContainer = () => {
   const [contact, setContact] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(async () => {
-    await setContacts(getContacts());
+  useEffect(() => {
+    setContacts(getContacts());
     setIsLoading(false);
   }, [])
 
@@ -34,7 +40,7 @@ const ContactContainer = () => {
   const changeContactField = (evt, fieldName) => {
     contact[fieldName] = evt.target.value;
     setContact(contact);
-    alert('changed..');
+    //alert('changed..');
   }
 
   // updatecontactfield... uses id to get contact via filter...updates it and sets 
@@ -49,7 +55,7 @@ const ContactContainer = () => {
 
   return (
 
-    <div>
+    <div className="contactList">
       {isLoading &&
         <h1>Loading...</h1>
       }
@@ -67,11 +73,18 @@ const ContactContainer = () => {
           <div className="contactDetails">
             Number of contacts {contacts.length}
 
-            {contacts.map((contact, index) => {
-              return <Contact contact={contact}
-                onDeleteContact={onDeleteContact}
-                onUpdateContact={changeContactField} />
-            })}
+            {contacts.map((contact, index) => (
+              <div key={index} className="contactEntry">
+                <div >
+                  {contact.name}
+                </div>
+
+                <div>
+                  <Link to={`/contacts/${contact.id}`}> Edit</Link>
+                </div>
+              </div>
+            ))}
+
 
           </div>
         </div>

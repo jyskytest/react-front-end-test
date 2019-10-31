@@ -19,3 +19,12 @@ export const addContactToDB = async contact => {
 export const deleteContactFromDB = contact => {
   contactStore = contactStore.filter((entry) => contact.id !== entry.id);
 }
+
+export const getContactById = (id) => {
+  id = parseInt(id);
+  const contact = contactStore.filter((contact => contact.id === id));
+  if (contact.length > 0) {
+    return contact[0]
+  }
+  return {}
+}
